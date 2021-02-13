@@ -4,9 +4,6 @@ const { createRecorder } = require('./Recorder');
 const { wait } = require('./util');
 const config = require('../data/config.json');
 
-/*
-	Create the audio player. We will use this for all of our connections.
-*/
 const player = createAudioPlayer({
 	behaviours: {
 		noSubscriber: NoSubscriberBehaviour.Play
