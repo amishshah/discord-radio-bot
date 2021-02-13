@@ -1,0 +1,5 @@
+{
+	"token": "discord_bot_token",
+	"device": "audio_hw_device_id",
+	"latency": 2000
+}

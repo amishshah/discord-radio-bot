@@ -4,7 +4,8 @@
   "description": "A proof-of-concept radio bot for Discord.js. Streams audio from a hardware device on your computer over a Discord voice channel.",
   "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/index.js"
   },
   "repository": {
     "type": "git",
@@ -20,9 +21,14 @@
     "dj"
   ],
   "author": "Amish Shah <amishshah.2k@gmail.com>",
-  "license": "Apache-2.0",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/amishshah/discord-radio-bot/issues"
   },
-  "homepage": "https://github.com/amishshah/discord-radio-bot#readme"
+  "homepage": "https://github.com/amishshah/discord-radio-bot#readme",
+  "dependencies": {
+    "@discordjs/voice": "0.0.1-alpha",
+    "discord.js": "^12.5.1",
+    "sodium": "^3.0.2"
+  }
 }
