@@ -30,6 +30,7 @@ For example, playing the above device will mirror audio from the speaker output 
 ```json
 {
   "token": "discord_bot_token",
+  "owner": "discord_user_id",
   "device": "Stereo Mix (Realtek(R) Audio)",
   "type": "dshow",
   "maxTransmissionGap": 5000
@@ -49,6 +50,7 @@ Then configure your `config.json` with the device you'd like to use:
 ```json
 {
   "token": "discord_bot_token",
+  "owner": "discord_user_id",
   "device": "alsa_output.pci.3.analog-stereo.monitor",
   "type": "pulse",
   "maxTransmissionGap": 5000
