@@ -2,6 +2,11 @@
 
 A proof-of-concept radio bot for Discord.js. Streams audio from a hardware device on your computer (e.g. your output speaker, input microphone) over a Discord voice channel.
 
+**Works on:**
+
+- Linux (via PulseAudio `pulse`)
+- Windows (via DirectShow `dshow`)
+
 **Only works on systems with Pulse audio!**
 
 ## Usage
@@ -9,8 +14,29 @@ A proof-of-concept radio bot for Discord.js. Streams audio from a hardware devic
 1. Clone the repo
 2. Install dependencies - `npm install`
 3. Configure `data/config.json`
-	- To find your hardware device ID, run `pactl list short sources`.
+	- See below for system-specific details.
 4. Start! - `npm start`
+
+## Configuring on Windows via `dshow`
+
+Run `ffmpeg -list_devices true -f dshow -i dummy` and observe output containing something similar:
+
+```
+DirectShow audio devices
+ "Stereo Mix (Realtek(R) Audio)"
+    Alternative name "@device_cm_{ID1}\wave_{ID2}"
+```
+
+For example, playing the above device will mirror audio from the speaker output of your machine. Your `config.json` should then be considered like so:
+
+```json
+{
+  "token": "discord_bot_token",
+  "device": "Stereo Mix (Realtek(R) Audio)",
+  "type": "dshow",
+  "maxTransmissionGap": 5000
+}
+```
 
 ## License
 

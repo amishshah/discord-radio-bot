@@ -1,12 +1,12 @@
 const { Client, Intents } = require('discord.js');
-const { NoSubscriberBehaviour, StreamType, createAudioPlayer, createAudioResource, entersState, AudioPlayerStatus, VoiceConnectionStatus, joinVoiceChannel } = require('@discordjs/voice');
+const { NoSubscriberBehavior, StreamType, createAudioPlayer, createAudioResource, entersState, AudioPlayerStatus, VoiceConnectionStatus, joinVoiceChannel } = require('@discordjs/voice');
 const { createRecorder } = require('./Recorder');
-const { wait } = require('./util');
 const config = require('../data/config.json');
 
 const player = createAudioPlayer({
-	behaviours: {
-		noSubscriber: NoSubscriberBehaviour.Play
+	behaviors: {
+    noSubscriber: NoSubscriberBehavior.Play,
+    maxMissedFrames: Math.round(config.maxTransmissionGap / 20)
 	}
 });
 
@@ -15,15 +15,14 @@ player.on('stateChange', (oldState, newState) => {
 		console.log('Playing audio output on audio player');
 	} else if (newState.status === AudioPlayerStatus.Idle) {
 		console.log('Playback has stopped. Attempting to restart.');
-		attachRecorder();
+		setTimeout(() => attachRecorder(), 3e3);
 	}
 });
 
 async function attachRecorder() {
-	const resource = createAudioResource(createRecorder(config.device), {
+	const resource = createAudioResource(createRecorder(config.device, config.type), {
 		inputType: StreamType.OggOpus,
 	});
-	await wait(config.latency);
 	player.play(resource);
 }
 

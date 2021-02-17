@@ -27,8 +27,9 @@
   },
   "homepage": "https://github.com/amishshah/discord-radio-bot#readme",
   "dependencies": {
-    "@discordjs/voice": "0.0.1-alpha",
+    "@discordjs/voice": "0.0.2",
     "discord.js": "^12.5.1",
+    "prism-media": "^1.2.7",
     "sodium": "^3.0.2"
   }
 }
