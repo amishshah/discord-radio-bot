@@ -38,6 +38,25 @@ For example, playing the above device will mirror audio from the speaker output 
 }
 ```
 
+## Configuring on Linux via `pulse`
+
+Run `pactl list short sources` and observe output containing something similar:
+
+```
+5   alsa_output.pci.3.analog-stereo.monitor   module-alsa-card.c   s16le 2ch 44100Hz   IDLE
+```
+
+Then configure your `config.json` with the device you'd like to use:
+
+```json
+{
+  "token": "discord_bot_token",
+  "device": "alsa_output.pci.3.analog-stereo.monitor",
+  "type": "pulse",
+  "maxTransmissionGap": 5000
+}
+```
+
 ## License
 
 > MIT License

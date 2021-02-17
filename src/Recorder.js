@@ -2,7 +2,7 @@ const prism = require('prism-media');
 
 /**
  * Creates an output Ogg Opus stream for the given hardware resource
- * @param {string} hardwareDevice The ID for the hardware device (see `pactl list short sources`)
+ * @param {string} hardwareDevice The ID for the hardware device (see README)
  * @param {string} type The input type (dshow or pulse)
  */
 function createRecorder(hardwareDevice, type) {
