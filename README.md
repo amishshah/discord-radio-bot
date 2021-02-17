@@ -7,8 +7,6 @@ A proof-of-concept radio bot for Discord.js. Streams audio from a hardware devic
 - Linux (via PulseAudio `pulse`)
 - Windows (via DirectShow `dshow`)
 
-**Only works on systems with Pulse audio!**
-
 ## Usage
 
 1. Clone the repo
