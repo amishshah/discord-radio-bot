@@ -1,6 +1,8 @@
 const { Client, Intents } = require('discord.js');
 const { NoSubscriberBehavior, StreamType, createAudioPlayer, createAudioResource, entersState, AudioPlayerStatus, VoiceConnectionStatus, joinVoiceChannel } = require('@discordjs/voice');
 const { createRecorder } = require('./Recorder');
+const { watch } = require('fs');
+const { readFile } = require('fs/promises');
 const config = require('../data/config.json');
 
 const player = createAudioPlayer({
@@ -71,3 +73,23 @@ client.on('message', async (message) => {
     }
   }
 });
+
+if (config.activity != null) {
+  watch(config.activity.input, async (event) => {
+    if (event !== 'change') return;
+
+    let buf;
+    try {
+      buf = await readFile(config.activity.input);
+    } catch (error) {
+      console.error(`Could not read activity input '${config.activity.input}'.`);
+      console.error(error);
+      return;
+    }
+
+    const data = JSON.parse(buf);
+    const activity = config.activity.format.replace(/\$(\w+)/g, (m, key) => data[key]);
+    console.log(`Listening to: ${activity}`);
+    await client.user.setActivity(activity, { type: 'LISTENING' });
+  });
+}

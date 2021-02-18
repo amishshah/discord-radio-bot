@@ -33,7 +33,8 @@ For example, playing the above device will mirror audio from the speaker output 
   "owner": "discord_user_id",
   "device": "Stereo Mix (Realtek(R) Audio)",
   "type": "dshow",
-  "maxTransmissionGap": 5000
+  "maxTransmissionGap": 5000,
+  "activity": null
 }
 ```
 
@@ -53,7 +54,27 @@ Then configure your `config.json` with the device you'd like to use:
   "owner": "discord_user_id",
   "device": "alsa_output.pci.3.analog-stereo.monitor",
   "type": "pulse",
-  "maxTransmissionGap": 5000
+  "maxTransmissionGap": 5000,
+  "activity": null
+}
+```
+
+## Configuring Activity
+
+Have your music player output some JSON output.
+Then configure your `config.json` with the input to read from and the format for the bot to use as its activity: 
+
+```json
+{
+  "token": "discord_bot_token",
+  "owner": "discord_user_id",
+  "device": "alsa_output.pci.3.analog-stereo.monitor",
+  "type": "pulse",
+  "maxTransmissionGap": 5000,
+  "activity": {
+    "input": "~/now_playing.json",
+    "format": "$artist - $title"
+  }
 }
 ```
 
