@@ -90,6 +90,6 @@ if (config.activity != null) {
     const data = JSON.parse(buf);
     const activity = config.activity.format.replace(/\$(\w+)/g, (m, key) => data[key]);
     console.log(`Listening to: ${activity}`);
-    await client.user.setActivity(activity, { type: 'LISTENING' });
+    await client.user.setActivity(activity);
   });
 }
