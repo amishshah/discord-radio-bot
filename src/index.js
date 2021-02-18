@@ -2,7 +2,7 @@ const { Client, Intents } = require('discord.js');
 const { NoSubscriberBehavior, StreamType, createAudioPlayer, createAudioResource, entersState, AudioPlayerStatus, VoiceConnectionStatus, joinVoiceChannel } = require('@discordjs/voice');
 const { createRecorder } = require('./Recorder');
 const { watch } = require('fs');
-const { readFile } = require('fs/promises');
+const { readFile, utimes, writeFile } = require('fs/promises');
 const config = require('../data/config.json');
 
 const player = createAudioPlayer({
@@ -47,6 +47,15 @@ void client.login(config.token);
 
 client.on('ready', async () => {
   console.log('Discord.js client is ready!');
+  if (config.activity != null) {
+    const time = new Date();
+    try {
+      await utimes(config.activity.input, time, time);
+    } catch (ex) {
+      writeFile(config.activity.input, '{}');
+    }
+  }
+
   try {
     await attachRecorder();
     console.log('Song is ready to play!');
