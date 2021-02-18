@@ -1,6 +1,7 @@
 {
   "token": "discord_bot_token",
   "owner": "discord_user_id",
+  "prefix": "-",
   "device": "audio_hw_device_id",
   "type": "pulse",
   "maxTransmissionGap": 5000,
