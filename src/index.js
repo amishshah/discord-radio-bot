@@ -66,7 +66,7 @@ client.on('ready', async () => {
 
 client.on('message', async (message) => {
   if (!message.guild) return;
-  if (message.member.user.id !== config.owner) return;
+  if (config.owner != null && message.member.user.id !== config.owner) return;
   if (message.content === `${config.prefix}join`) {
     const channel = message.member?.voice.channel;
     if (channel) {
