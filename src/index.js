@@ -84,6 +84,7 @@ client.on('message', async (message) => {
 });
 
 if (config.activity != null) {
+  let prevActivity = '';
   watch(config.activity.input, async (event) => {
     if (event !== 'change') return;
 
@@ -98,6 +99,11 @@ if (config.activity != null) {
 
     const data = JSON.parse(buf);
     const activity = config.activity.format.replace(/\$(\w+)/g, (m, key) => data[key]);
+    if (activity === prevActivity) {
+      return;
+    }
+
+    prevActivity = activity;
     console.log(`Listening to: ${activity}`);
     await client.user.setActivity(activity);
   });
