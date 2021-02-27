@@ -1,6 +1,8 @@
 const { Client, Intents } = require('discord.js');
 const { NoSubscriberBehavior, StreamType, createAudioPlayer, createAudioResource, entersState, AudioPlayerStatus, VoiceConnectionStatus, joinVoiceChannel } = require('@discordjs/voice');
 const { createRecorder } = require('./Recorder');
+const { watch } = require('fs');
+const { readFile, utimes, writeFile } = require('fs/promises');
 const config = require('../data/config.json');
 
 const player = createAudioPlayer({
@@ -45,6 +47,15 @@ void client.login(config.token);
 
 client.on('ready', async () => {
   console.log('Discord.js client is ready!');
+  if (config.activity != null) {
+    const time = new Date();
+    try {
+      await utimes(config.activity.input, time, time);
+    } catch (ex) {
+      writeFile(config.activity.input, '{}');
+    }
+  }
+
   try {
     await attachRecorder();
     console.log('Song is ready to play!');
@@ -55,7 +66,8 @@ client.on('ready', async () => {
 
 client.on('message', async (message) => {
   if (!message.guild) return;
-  if (message.content === '-join') {
+  if (config.owner != null && message.member.user.id !== config.owner) return;
+  if (message.content === `${config.prefix}join`) {
     const channel = message.member?.voice.channel;
     if (channel) {
       try {
@@ -70,3 +82,35 @@ client.on('message', async (message) => {
     }
   }
 });
+
+if (config.activity != null) {
+  let prevActivity = '';
+  watch(config.activity.input, async (event) => {
+    if (event !== 'change') return;
+
+    let buf;
+    try {
+      buf = await readFile(config.activity.input);
+    } catch (error) {
+      console.error(`Could not read activity input '${config.activity.input}'.`);
+      console.error(error);
+      return;
+    }
+
+    let data;
+    try {
+      data = JSON.parse(buf);
+    } catch (err) {
+      return;
+    }
+
+    const activity = config.activity.format.replace(/\$(\w+)/g, (m, key) => data[key]);
+    if (activity === prevActivity) {
+      return;
+    }
+
+    prevActivity = activity;
+    console.log(`Listening to: ${activity}`);
+    await client.user.setActivity(activity);
+  });
+}
