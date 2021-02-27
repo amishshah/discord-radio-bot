@@ -97,7 +97,13 @@ if (config.activity != null) {
       return;
     }
 
-    const data = JSON.parse(buf);
+    let data;
+    try {
+      data = JSON.parse(buf);
+    } catch (err) {
+      return;
+    }
+
     const activity = config.activity.format.replace(/\$(\w+)/g, (m, key) => data[key]);
     if (activity === prevActivity) {
       return;
