@@ -2,6 +2,7 @@ const { Client, Intents } = require('discord.js');
 const { NoSubscriberBehavior, StreamType, createAudioPlayer, createAudioResource, entersState, AudioPlayerStatus, VoiceConnectionStatus, joinVoiceChannel } = require('@discordjs/voice');
 const { createRecorder } = require('./Recorder');
 const config = require('../data/config.json');
+const { createDiscordJSAdapter } = require('./adapter/adapter');
 
 const player = createAudioPlayer({
   behaviors: {
@@ -27,7 +28,11 @@ async function attachRecorder() {
 }
 
 async function connectToChannel(channel) {
-  const connection = joinVoiceChannel(channel);
+  const connection = joinVoiceChannel({
+    channelId: channel.id,
+    guildId: channel.guild.id,
+    adapterCreator: createDiscordJSAdapter(channel),
+  });
   try {
     await entersState(connection, VoiceConnectionStatus.Ready, 30e3);
     return connection;
